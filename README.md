@@ -6,7 +6,7 @@ NetVotes
 
 NetVotes is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation. For source availability and license information see `licence.txt`
 
-* Contact: Vincent Labatut <nejat.arinik@univ-avignon.fr>
+* Contact: Nejat ARINIK  <nejat.arinik@univ-avignon.fr>
 
 -----------------------------------------------------------------------
 
