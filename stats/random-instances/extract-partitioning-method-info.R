@@ -4,7 +4,6 @@
 ###############################################################################
 source("stats/define-consts.R")
 source("stats/common.R")
-source("stats/define-comparison-analytics-for-article.R")
 
 
 source("src/define-consts.R")
