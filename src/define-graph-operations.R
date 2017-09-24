@@ -254,7 +254,7 @@ compute.imbalance.from.membership = function(network.path, membership, output.ty
 		return(format(round(imb.value, 5), nsmall = 5)) # 5 decimal floating
 	}
 	else{ # if(output.type == "percentage")
-		perc = imb.value/ sum(abs(E(g)$weight))
+		perc = (imb.value/ sum(abs(E(g)$weight)))*100
 		return(format(round(perc, 5), nsmall = 5))
 	}
 	
@@ -321,7 +321,7 @@ compute.relaxed.imbalance.from.membership = function(network.path, membership, o
 		return(format(round(cost, 5), nsmall = 5)) # 5 decimal floating
 	}
 	else{ # if(output.type == "percentage")
-		perc = cost/ sum(abs(E(g)$weight))
+		perc = (cost/ sum(abs(E(g)$weight)))*100
 		return(format(round(perc, 5), nsmall = 5))
 	}
 }
@@ -338,8 +338,8 @@ compute.neg.pos.edge.percentage = function(g){
 	pos.edges.total.weight = sum(abs(E(g)$weight[pos.links]))
 	
 	result = list()
-	result$pos.perc = pos.edges.total.weight/ (pos.edges.total.weight + neg.edges.total.weight)
-	result$neg.perc = neg.edges.total.weight/ (pos.edges.total.weight + neg.edges.total.weight)
+	result$pos.perc = (pos.edges.total.weight/ (pos.edges.total.weight + neg.edges.total.weight))*100
+	result$neg.perc = (neg.edges.total.weight/ (pos.edges.total.weight + neg.edges.total.weight))*100
 	
 	return(result)
 }
