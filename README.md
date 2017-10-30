@@ -31,16 +31,19 @@ Here are the folders composing the project:
 # Installation
 1. Install the [`R` language](https://www.r-project.org/)
 2. Install the following R packages:
-   * [`igraph`](http://igraph.org/r/): required (tested with version 1.0.1).
-     * first, type in terminal for `XML` package: `sudo apt-get install libxml2-dev`
+   * XML
+     * in terminal, type: `sudo apt-get install libxml2-dev`
      * in R, type: `install.packages("XML")`
-     * then, type in R: `install.packages("igraph")`
-   * install `iterators`
-   * install `foreach`
-   * install `doParallel`
-   * install `sourcetools`
-   * install `ggplot2` (if an error occurs like ‘ggplot2 is not available’, type in terminal ‘sudo apt-get install r-cran-ggplot2’)
-   * install `treemap`
+   * [`igraph`](http://igraph.org/r/): required (tested with version 1.0.1).
+     * in terminal, type: sudo apt-get install libblas-dev liblapack-dev gfortran
+     * type in R: install.packages("irlba")
+     * type in R: `install.packages("igraph")`
+   * `iterators`
+   * `foreach`
+   * `doParallel`
+   * `sourcetools`
+   * `ggplot2` (if an error occurs like ‘ggplot2 is not available’, type in terminal ‘sudo apt-get install r-cran-ggplot2’)
+   * `treemap`
 3. Install `IBM Cplex 12.7.1`
    * for ubuntu, type the following command:
      * `sudo ./cplex_studio12.7.1.linux-x86-64.bin` 
@@ -49,15 +52,31 @@ Here are the folders composing the project:
        * If you use trial version or want to change the default installation folder, update the corresponding variable `CPLEX.BIN.PATH` located in `define-consts.R`. Otherwise, no need to update it
 4. Install Open Java 1.8 (our `ExCC` jar file is compiled with that - **TODO**)
 5. Install `OpenMPI` for C++. Export `LD_LIBRARY_PATH` variable to the path where openmpi shared objects are located. For example, in my case: `export LD_LIBRARY_PATH=/usr/lib/openmpi/lib:$LD_LIBRARY_PATH`  (if `LD_LIBRARY_PATH` is not set correctly, you will get ‘error when loading shared object ...’)
-6. Install `numpy` and `scipy` for python
-7. Download this project from GitHub and unzip the archive.
-8. Go to the current project directory
-9. In terminal: `chmod a+x exe/grapspcc` and `chmod a+x exe/kmbs`
-10. configure `src/netvotes.R` file.
-11. configure  `LIBRARY.LOC.PATH` in `src/netvotes.R` and `stats/real-instances/main.R`
-Initially, `LIBRARY.LOC.PATH = .libPaths()`. But, you can configure it (especially, if you downloaded all R libs in a specific dir)
-12. configure/update `CPLEX.BIN.PATH`  in `src/define-consts.R`
-13. configure `MAX.G.SIZE` located in `stats/define-consts.R`. I set to 150 because when graph-size increases (especially after 250), the execution of ExCC is getting slower.
+   * in terminal: sudo apt-get install gcc g++ openmpi-bin openmpi-doc libopenmpi-dev 
+   * check openmpi by typing in terminal: which mpicc
+   * configure openmpi environment variables in your home by adding these 2 lines at the end of the `~/.bashrc` file (change the 2 paths below depending on your installation):
+      * export PATH=/usr/include/openmpi/:$PATH
+      * export LD_LIBRARY_PATH=/usr/lib/openmpi/lib:$LD_LIBRARY_PATH
+    * type in terminal: source ~/.bashrc
+6. (I am not sure if it is really needed) Install [`Boost C++ library`](http://www.boost.org/) 
+   * download the boost c++ library
+   * decompress it on "tempdir"
+   * run on the "tempdir": ./boostrap.sh
+   * once the configuration succeds edit the file "project-config.jam" and add the "using mpi ;" at the end.
+   * run in terminal: sudo ./b2 --target=shared,static --with=all -j2 install
+   * run in terminal: sudo ldconfig
+   * check if mpi .so files are installed correctly
+      * run: ls /usr/local/lib
+      * check if the files "libbost_mpi.a", "libbost_mpi.so" are there
+7. Install `numpy` and `scipy` for python
+8. Download this project from GitHub and unzip the archive.
+9. Go to the current project directory
+10. In terminal: `chmod a+x exe/grapspcc` and `chmod a+x exe/kmbs`
+11. configure `src/run-netvotes.R` file.
+12. configure  `LIBRARY.LOC.PATH` in `src/run-netvotes.R` and `stats/real-instances/main.R`
+Initially, `LIBRARY.LOC.PATH = .libPaths()`. But, you can configure it (especially, if you downloaded all R libs in a specific dir). What is easier is to update your .libPaths() in `/etc/R/Rprofile.site` (i.e. I added my personal local lib dir by doing: .libPaths(c("~/R/R-library", .libPaths()))). Hence, I do not need to update the ".libPaths()" each R session
+13. configure/update `CPLEX.BIN.PATH`  in `src/define-consts.R`
+14. configure `MAX.G.SIZE` located in `stats/define-consts.R`. I set to 150 because when graph-size increases (especially after 250), the execution of ExCC is getting slower.
 
 
 
@@ -66,7 +85,7 @@ In order to replicate the experiments from the article, perform the following op
 
 1. Open the `R` console.
 2. Set the current projetct directory as the working directory, using `setwd("my/path/to/the/project/SignedBenchmark")`.
-3. Run `src/run-netvotes.R`
+3. Run `src/run-netvotes.R` (you might first check the boolean variables)
 4. Run `stats/main.R`
 
 
