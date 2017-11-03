@@ -66,7 +66,10 @@ do.iteration = function(worker.id = NA, target, domain, period){
 	
 	curr.mep.indx.list = c()
 	for(i in seq(1, nb.obs)){
-		s.date.interval.list = unlist(strsplit(x=as.character(target.MEP.DETAILS[i, "Periods"]), split="::"))
+		# in the "Periods" column, "NA" sometimes appears, we handle with that via "gsub()"
+		# "01/05/2017" is chosen arbitrary, which is more recent than 2014 (last period)
+		date.list = gsub("NA", "01/05/2017", as.character(mep.details[i, "Periods"])) 
+		s.date.interval.list = unlist(strsplit(x=date.list, split="::"))
 		
 		mep.availability.check.list = sapply(s.date.interval.list,
 				function(s.date.interval){
@@ -74,7 +77,6 @@ do.iteration = function(worker.id = NA, target, domain, period){
 				date.list = as.Date(s.date.list, format="%d/%m/%Y")
 				beg.period.mep = date.list[1]
 				end.period.mep = date.list[2]
-				if(is.na(end.period.mep)) end.period.mep = as.Date(EUROPARL.END.DATE, format="%d/%m/%Y")
 				
 				# there are 2 posibilities:
 				# 1) beg.period.mep = "01/01/2009", end.period.mep = "01/07/2014",
@@ -88,7 +90,7 @@ do.iteration = function(worker.id = NA, target, domain, period){
 				return(case1 || case2)
 		})
 
-		if(any(mep.availability.check.list) == TRUE)
+		if(any(mep.availability.check.list == TRUE))
 			curr.mep.indx.list = c(curr.mep.indx.list, i)
 	}
 	
